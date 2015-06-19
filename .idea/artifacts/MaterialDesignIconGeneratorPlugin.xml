@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="MaterialDesignIconGeneratorPlugin">
+    <output-path>$PROJECT_DIR$</output-path>
+    <root id="root">
+      <element id="archive" name="MaterialDesignIconGeneratorPlugin.jar">
+        <element id="module-output" name="MaterialDesignIconGeneratorPlugin" />
+        <element id="directory" name="META-INF">
+          <element id="dir-copy" path="$PROJECT_DIR$/META-INF" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
