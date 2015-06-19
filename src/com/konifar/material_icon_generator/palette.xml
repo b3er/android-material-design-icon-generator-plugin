@@ -2,6 +2,10 @@
 <colors default="black">
     <option id="black">#000000</option>
     <option id="white">#FFFFFF</option>
+    <option id="holo_light">#99333333</option>
+    <option id="holo_dark">#CCFFFFFF</option>
+    <option id="holo_light_disabled">#4C333333</option>
+    <option id="holo_dark_disabled">#4CFFFFFF</option>
     <!--Red-->
     <option id="red_50">#FFEBEE</option>
     <option id="red_100">#FFCDD2</option>

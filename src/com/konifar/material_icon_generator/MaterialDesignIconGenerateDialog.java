@@ -105,6 +105,7 @@ public class MaterialDesignIconGenerateDialog extends DialogWrapper {
         initSizeCheckBox();
         initFileCustomColor();
 
+
         initLabelLink(labelOverview, URL_OVERVIEW);
         initLabelLink(labelRepository, URL_REPOSITORY);
 
@@ -196,17 +197,23 @@ public class MaterialDesignIconGenerateDialog extends DialogWrapper {
 
             private void setText() {
                 if (model != null) {
-                    if(StringUtils.isEmpty(textFieldColorCode.getText())) {
+                    if (StringUtils.isEmpty(textFieldColorCode.getText())) {
                         model.setColorCode(null);
                         showIconPreview();
                         comboBoxColor.setSelectedItem("");
                         return;
                     }
                     try {
-                        Color.decode(textFieldColorCode.getText());
+                        if(textFieldColorCode.getText().length() > 7) {
+                            Color.decode("#" + textFieldColorCode.getText().substring(3));
+                            Integer.parseInt(textFieldColorCode.getText().substring(1, 3), 16);
+                        } else {
+                            Color.decode(textFieldColorCode.getText());
+                            model.setColorCode(textFieldColorCode.getText());
+                        }
                         model.setColorCode(textFieldColorCode.getText());
                         showIconPreview();
-                    } catch(NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         model.setColorCode(null);
                         comboBoxColor.setSelectedItem("");
                         showIconPreview();
@@ -243,6 +250,7 @@ public class MaterialDesignIconGenerateDialog extends DialogWrapper {
     }
 
     private void initDpComboBox() {
+        comboBoxDp.setSelectedIndex(1);
         comboBoxDp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -482,11 +490,18 @@ public class MaterialDesignIconGenerateDialog extends DialogWrapper {
 
     private BufferedImage generateColoredIcon(BufferedImage image) {
         Color color =  null;
+        int alpha = 255;
         if(model.getColorCode() != null) {
-            String colorString = model.getColorCode();
-            color = Color.decode(colorString);
+            String colorString = model.getColorCode(); //#FF000000 or #000000
+            if(colorString.length() > 7) {
+                color = Color.decode("#" + colorString.substring(3));
+                alpha = Integer.parseInt(colorString.substring(1, 3), 16);
+            } else {
+                color = Color.decode(colorString);
+            }
         }
         if(color == null) return image;
+
 
         int width = image.getWidth();
         int height = image.getHeight();
@@ -500,7 +515,7 @@ public class MaterialDesignIconGenerateDialog extends DialogWrapper {
                 pixels[0] = color.getRed();
                 pixels[1] = color.getGreen();
                 pixels[2] = color.getBlue();
-                pixels[3] = originalColor.getAlpha();//
+                pixels[3] = Math.round(alpha/255f*originalColor.getAlpha());
                 raster.setPixel(xx, yy, pixels);
             }
         }
@@ -564,5 +579,9 @@ public class MaterialDesignIconGenerateDialog extends DialogWrapper {
                 options[0]);
 
         return option == JOptionPane.OK_OPTION;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
